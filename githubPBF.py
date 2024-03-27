@@ -104,7 +104,7 @@ def main():
 
     for m in mymessage:
         print(m, end="", flush=True)
-        sleep(0.08)
+        sleep(0.05)
     sleep(2)
     print()
 

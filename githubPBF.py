@@ -53,20 +53,11 @@ def main():
     while(folder == ""):
         folder = input("Input the folder that you want to push on GitHub: ") or ""
 
-    save_to = input("path to store the folder: ") or ""
-    while(save_to == ""):
-        save_to = input("path to store the folder: ") or ""
-
-
     commit_message = commit_message + input("Enter the commit message: ") or ""
 
     
     for root,_,files in walk(folder):
-        createdir = True
         for f in files:
-            if(createdir):
-                system(f"mkdir -p {save_to}{path_delimiter}{root}")
-                createdir = False
             if(fileSize(f"{root}{path_delimiter}{f}")>=300):
                 large_files +=1
             file_counter += 1 
@@ -90,27 +81,29 @@ def main():
     sleep(2)
     print()
 
+
+    print(f"File pushed {pushed_files}/{file_counter}")
     for root,_,files in walk(folder):
         for f in files:
             print(f"File pushed {pushed_files}/{file_counter}")
-            f1_path = f"{root}{path_delimiter}{f} {save_to}{path_delimiter}{root}"
-            f2_path = f"{save_to}{path_delimiter}{folder}{path_delimiter}*"
-            
-            system(f"cp {f1_path} 1> /dev/null 2> /dev/null")
-
-            if(fileSize(f"{root}{path_delimiter}{f}")>100):
+            file_path = root+path_delimiter+f
+            file_size = fileSize(file_path)
+            if(file_size>300):
                 system(f"git lfs track \"*{f}\" 1> /dev/null 2> /dev/null")
                 system("git add .gitattributes 1> /dev/null 2> /dev/null")
-                print(f"Transferring a {fileSize(f'{root}{path_delimiter}{f}')}MB file. Your patience is appreciated")
+                print(f"Transferring a {file_size}MB file. Your patience is appreciated")
+            
 
-
-            system(f"git add {f2_path} 1> /dev/null 2> /dev/null")
+            system(f"git add {file_path} 1> /dev/null 2> /dev/null")
             system(f"git commit -s -m \"{commit_message}\" 1> /dev/null 2> /dev/null")
             system("git push origin HEAD 1> /dev/null 2> /dev/null")
             pushed_files += 1
-
-
+            
     print(f"File pushed {pushed_files}/{file_counter}")
+            
+
+    
+    
     return 0
 
 

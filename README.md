@@ -10,6 +10,8 @@ To run the script you will need ```python3```
 
 Download python3 [here](https://www.python.org/downloads/).
 
+If you want to push files of 300MB or larger, you will need to install [git-lfs](https://git-lfs.com/).
+
 ---
 
 ## HOW TO USE
